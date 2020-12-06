@@ -6,6 +6,9 @@ using UnityEngine.UI;
 public class CompleteSlider : MonoBehaviour
 {
     [SerializeField]
+    int restaurantID = 0;
+
+    [SerializeField]
     int getCount;
     [SerializeField]
     int eatCount;
@@ -22,14 +25,23 @@ public class CompleteSlider : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        getSlider.maxValue = maxCount;
-        eatSlider.maxValue = maxCount;
     }
 
+    private void OnEnable()
+    {
+        //店IDによりデータベースから数値を取得する
+        maxCount = Database.Instance.df.Where("RestaurantID", restaurantID).LineSize();
+        getCount = Database.Instance.df.Where("RestaurantID", restaurantID).Where("Flag", 1).LineSize();
+        eatCount = Database.Instance.df.Where("RestaurantID", restaurantID).Where("Flag", 2).LineSize();
+        getSlider.maxValue = maxCount;
+        eatSlider.maxValue = maxCount;
+        UpdateSlider();
+        print("スライダー更新");
+    }
     // Update is called once per frame
     void Update()
     {
-        UpdateSlider();
+        //UpdateSlider();
     }
 
     void EatFoodCount(int eatFoodCount)

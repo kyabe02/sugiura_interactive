@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -56,6 +57,95 @@ namespace UniBlock
         public Wait(float second)
         {
             this.intervalMs = second * 1000f;
+        }
+    }
+
+    public sealed class Liner : TimerBlock
+    {
+        Func<float> func;
+        Action<float> action;
+        float start;
+        float end;
+
+        public Liner(Func<float> func, Action<float> action, float end, float second) {
+            this.action = action;
+            this.func = func;
+            this.end = end;
+            this.intervalMs = second * 1000f;
+        }
+
+        public sealed override void TimerStart()
+        {
+            start = func();
+        }
+
+        public sealed override void TimerUpdate()
+        {
+            //値
+            var y1 = start;
+            var y2 = end;
+            var x1 = 0;
+            var x2 = intervalMs;
+            var t = sw.ElapsedMilliseconds;
+            //傾き
+            var A = (y2 - y1) / (x2 - x1);
+            //切片
+            var B = y1;
+            //出力
+            var y = A * t + B;
+            //出力する色
+            action(y);
+            Debug.Log(y);
+        }
+
+        public sealed override void TimerEnd()
+        {
+            action(end);
+        }
+    }
+
+    public sealed class LinerVector4 : TimerBlock
+    {
+        Func<Vector4> func;
+        Action<Vector4> action;
+        Vector4 start;
+        Vector4 end;
+
+        public LinerVector4(Func<Vector4> func, Action<Vector4> action, Vector4 end, float second)
+        {
+            this.action = action;
+            this.func = func;
+            this.end = end;
+            this.intervalMs = second * 1000f;
+        }
+
+        public sealed override void TimerStart()
+        {
+            start = func();
+        }
+
+        public sealed override void TimerUpdate()
+        {
+            //値
+            var y1 = start;
+            var y2 = end;
+            var x1 = 0;
+            var x2 = intervalMs;
+            var t = sw.ElapsedMilliseconds;
+            //傾き
+            var A = (y2 - y1) / (x2 - x1);
+            //切片
+            var B = y1;
+            //出力
+            var y = A * t + B;
+            //出力する色
+            action(y);
+            Debug.Log(y);
+        }
+
+        public sealed override void TimerEnd()
+        {
+            action(end);
         }
     }
 
