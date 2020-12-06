@@ -29,12 +29,12 @@ public class Sound : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlayBGM();
+        //PlayBGM();
 
         //BGM設定
-        BGM.volume = 1.0f / 5.0f;
+        //BGM.volume = 1.0f / 5.0f;
         //SE設定
-        SE.volume = 1.0f / 2.0f;
+        //SE.volume = 1.0f / 2.0f;
     }
 
     // Update is called once per frame
@@ -67,11 +67,11 @@ public class Sound : MonoBehaviour
     }
 
     public void SetBGM() {
-        BGM.volume = bgmSlider.value / 5;
+        BGM.volume = bgmSlider.value;
     }
 
     public void SetSE()
     {
-        SE.volume = seSlider.value / 2;
+        SE.volume = seSlider.value;
     }
 }

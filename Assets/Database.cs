@@ -80,6 +80,11 @@ public class Database : SingletonMonoBehaviour<Database>
     {
         df.Set("Flag", foodID, "2");
     }
+
+    public int GetEatenCount(int restaurantID, int eatFlag) {
+        //特定のレストランだけを抽出する
+        return df.Where("RestaurantID", restaurantID).Where("Flag", eatFlag).LineSize();
+    }
 }
 
 
