@@ -41,6 +41,13 @@ public class DataToUI : MonoBehaviour
     [SerializeField]
     Text SumSaltText;
 
+    [Header("図鑑関連")]
+    [SerializeField]
+    VerticalLayoutGroup liblaryBox;
+    private int zukanStoreId=0;
+    private int currentDisplayType = 0;//0が図鑑、１がガチャ
+
+
     [Header("フードホバー関連")]
     [SerializeField]
     Text EatDecideText;
@@ -50,6 +57,8 @@ public class DataToUI : MonoBehaviour
     Text EatCancelText;
     [SerializeField]
     PanelManager EatCancelPanel;
+    [SerializeField]
+    PanelManager NotEatPanel;
 
     //データベース
     private int storeId = 0;//お店番号(DropDownから取得される)
@@ -110,6 +119,23 @@ public class DataToUI : MonoBehaviour
         block.Activate();
     }
 
+    public void TransitionWithZukan(PanelManager next)
+    {
+        this.next = next;
+
+        //フローチャート作成
+        ProcessBlock block = new Sequence(
+            new FadeOn(fade, 0.2f),//0.2秒かけて黒くする
+            new Function(ChangePanel),//パネルを変更する
+            new Function(SetLiblary),
+            new Wait(0.2f),//0.2秒待機する
+            new FadeOff(fade, 0.2f)//0.2秒かけて透明にする
+            );
+
+        //フローチャート実行
+        block.Activate();
+    }
+
     //指定したパネルをホバーさせる
     public void Hover(PanelManager hover) {
         this.hover = hover;
@@ -153,6 +179,7 @@ public class DataToUI : MonoBehaviour
     public void SetGachaResule() {
         //リザルトを空にする
         DestroyChild(gachaResultBox.transform);
+        currentDisplayType = 0;
 
         int sum = 0;
         int sumCal = 0;
@@ -176,10 +203,12 @@ public class DataToUI : MonoBehaviour
                 instance.gameObject.SetActive(true);
                 //プレハブにフードIDを流し込み
                 instance.SetFoodID(foodID);
+                instance.itemType = 0;
                 //プレハブの表示準備OKにする
                 instance.Display();
                 //Contentに突っ込む
                 instance.transform.parent = gachaResultBox.transform;
+                instance.transform.localScale = new Vector3(1, 1, 1);
                 //金額の更新
                 sum += price;
                 sumCal += Database.Instance.GetCalorie(foodID);
@@ -202,6 +231,33 @@ public class DataToUI : MonoBehaviour
 
     }
 
+    public void SetZukan(int zukanStoreId) {
+        this.zukanStoreId = zukanStoreId;
+    }
+
+    void SetLiblary() {
+        //図鑑を空にする
+        DestroyChild(liblaryBox.transform);
+        currentDisplayType = 1;
+
+        var items = Database.Instance.df.Where("RestaurantID", zukanStoreId);
+        for (int i = 0; i < items.LineSize(); i++) {
+            //フードプレハブを生成
+            FoodItem instance = Instantiate(foodItem);
+            instance.gameObject.SetActive(true);
+            instance.itemType = 1;
+            //プレハブにフードIDを流し込み
+            var currentFoodId = int.Parse(items.Get("MenuID", i));
+            instance.SetFoodID(currentFoodId);
+            //プレハブの表示準備OKにする
+            instance.Display();
+            //Contentに突っ込む
+            instance.transform.parent = liblaryBox.transform;
+            instance.transform.localScale = new Vector3(1, 1, 1);
+            //金額の更新
+        }
+    }
+
     private void DestroyChild(Transform parentTransform) {
         foreach (Transform childTransform in parentTransform)
         {
@@ -214,14 +270,37 @@ public class DataToUI : MonoBehaviour
     }
 
     public void DisplayFoodHover() {
-        if (Database.Instance.GetFlag(currentMenuId) == 1) {
-            EatDecideText.text = Database.Instance.GetName(currentMenuId);
-            Hover(EatDecidePanel);
-        }else if (Database.Instance.GetFlag(currentMenuId) == 2)
+        if (currentDisplayType == 0)
         {
-            EatCancelText.text = Database.Instance.GetName(currentMenuId);
-            Hover(EatCancelPanel);
+            if (Database.Instance.GetFlag(currentMenuId) == 1)
+            {
+                EatDecideText.text = Database.Instance.GetName(currentMenuId);
+                Hover(EatDecidePanel);
+            }
+            else if (Database.Instance.GetFlag(currentMenuId) == 2)
+            {
+                EatCancelText.text = Database.Instance.GetName(currentMenuId);
+                Hover(EatCancelPanel);
+            }
         }
+        else if (currentDisplayType == 1)
+        {
+            if (Database.Instance.GetFlag(currentMenuId) == 0)
+            {
+                Hover(NotEatPanel);
+            }
+            else if (Database.Instance.GetFlag(currentMenuId) == 1)
+            {
+                EatDecideText.text = Database.Instance.GetName(currentMenuId);
+                Hover(EatDecidePanel);
+            }
+            else if (Database.Instance.GetFlag(currentMenuId) == 2)
+            {
+                EatCancelText.text = Database.Instance.GetName(currentMenuId);
+                Hover(EatCancelPanel);
+            }
+        }
+
     }
 
     public void SetEaten() {
@@ -237,6 +316,11 @@ public class DataToUI : MonoBehaviour
     public void ResetDisplay() {
         //全ての子供を取得する
         foreach (FoodItem child in gachaResultBox.transform.GetComponentsInChildren<FoodItem>())
+        {
+            var act = child.gameObject.GetComponent<FoodItem>();
+            act.Display();
+        }
+        foreach (FoodItem child in liblaryBox.transform.GetComponentsInChildren<FoodItem>())
         {
             var act = child.gameObject.GetComponent<FoodItem>();
             act.Display();

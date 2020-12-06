@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Sound Manager
+  m_EditorClassIdentifier: Assembly-CSharp:ManagerSet:SoundManager
+  mixerBGM: {fileID: 5920902664737279052, guid: c3233206fa99640bbbd157f792a315df,
+    type: 2}
+  mixerSE: {fileID: -3069813189095821457, guid: c3233206fa99640bbbd157f792a315df,
+    type: 2}
+  mixerVoice: {fileID: -3641737730035868569, guid: c3233206fa99640bbbd157f792a315df,
+    type: 2}
