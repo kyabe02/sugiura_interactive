@@ -21,4 +21,13 @@ public class LoopButton : MonoBehaviour
         index = (index + 1) % LoopList.Count;
         text.text = LoopList[index];
     }
+
+    public string Value
+    {
+        get
+        {
+            return LoopList[index];
+        }
+    }
+
 }
