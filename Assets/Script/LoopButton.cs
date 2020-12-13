@@ -5,14 +5,20 @@ using UnityEngine.UI;
 
 public class LoopButton : MonoBehaviour
 {
+
+    [SerializeField]
+    int defaultIndex = 0;
+
     [SerializeField]
     List<string> LoopList;
+
 
     int index = 0;
     Text text;
     public void Start()
     {
         text = GetComponentInChildren<Text>();
+        index = defaultIndex;
         text.text = LoopList[index];
     }
 
