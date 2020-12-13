@@ -27,7 +27,7 @@ public class DataToUI : MonoBehaviour
     [SerializeField]
     InputField calorieInputField;
     [SerializeField]
-    InputField moneyInputField;
+    Text moneyInputText;
 
     [Header("ガチャ結果関連")]
     [SerializeField]
@@ -183,7 +183,7 @@ public class DataToUI : MonoBehaviour
 
         int sum = 0;
         int sumCal = 0;
-        int sumSalt = 0;
+        float sumSalt = 0;
         int retryCounter = 0;
         while (true) {
             //フードIDをランダムで取得
@@ -212,7 +212,7 @@ public class DataToUI : MonoBehaviour
                 //金額の更新
                 sum += price;
                 sumCal += Database.Instance.GetCalorie(foodID);
-                sumSalt += Database.Instance.GetCalorie(foodID);
+                sumSalt += Database.Instance.GetSalt(foodID);
                 //Newの更新
                 if (Database.Instance.GetFlag(foodID)==0) {
                     Database.Instance.SetWatched(foodID);
@@ -226,8 +226,8 @@ public class DataToUI : MonoBehaviour
         }
 
         SumPriceText.text = sum.ToString() + "円";
-        SumCalText.text = sumCal.ToString() + "Cal";
-        SumSaltText.text = "塩分" + sumSalt.ToString();
+        SumCalText.text = sumCal.ToString() + "kCal";
+        SumSaltText.text = "塩分" + sumSalt.ToString() + "g";
 
     }
 
@@ -339,9 +339,9 @@ public class DataToUI : MonoBehaviour
         calorie = int.Parse(calorieInputField.text);
     }
 
-    public void SetMoney(InputField inputField)
+    public void SetMoney(Text text)
     {
-        money = int.Parse(inputField.text);
+        money = int.Parse(text.text);
         Debug.Log("金額が" + money + "に設定されました");
     }
 

@@ -61,9 +61,10 @@ public class Database : SingletonMonoBehaviour<Database>
         return int.Parse(df.Where("MenuID", foodID).Get("Calorie", 0));
     }
 
-    public int GetSalt(int foodID)
+    public float GetSalt(int foodID)
     {
-        return int.Parse(df.Where("MenuID", foodID).Get("Salt", 0));
+        print(df.Where("MenuID", foodID).Get("Salt", 0));
+        return float.Parse(df.Where("MenuID", foodID).Get("Salt", 0));
     }
 
     public int GetFlag(int foodID)
