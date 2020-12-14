@@ -36,4 +36,10 @@ public class LoopButton : MonoBehaviour
         }
     }
 
+    public void SetLoopList(List<string> list, int defaultIndex=0)
+    {
+        LoopList = list;
+        index = defaultIndex;
+    }
+
 }
