@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 using UniBlock;
 
@@ -23,7 +24,7 @@ public class DataToUI : MonoBehaviour
     //外部連携のUI
     [Header("ユーザー入力")]
     [SerializeField]
-    Dropdown storeDropDown;
+    Text storeText;
     [SerializeField]
     InputField calorieInputField;
     [SerializeField]
@@ -69,6 +70,12 @@ public class DataToUI : MonoBehaviour
     PanelManager next;              //次に遷移する用のパネル
     PanelManager hover;             //重ねて表示する用のパネル
     int currentMenuId = 0;
+
+    //お店用enum
+    enum Store
+    {
+        デニーズ, 松屋, マクドナルド
+    }
 
     void Start()
     {
@@ -226,7 +233,7 @@ public class DataToUI : MonoBehaviour
         }
 
         SumPriceText.text = sum.ToString() + "円";
-        SumCalText.text = sumCal.ToString() + "kCal";
+        SumCalText.text = sumCal.ToString() + "kcal";
         SumSaltText.text = "塩分" + sumSalt.ToString() + "g";
 
     }
@@ -330,8 +337,9 @@ public class DataToUI : MonoBehaviour
     //================================
     // データベース関連
     //================================
-    public void SetStoreID(Dropdown dropDown) {
-        storeId = dropDown.value;
+    public void SetStoreID() {
+        Debug.Log("お店の名前は" + storeText.text);
+        storeId = (int)Enum.Parse(typeof(Store), storeText.text);
         Debug.Log("idが"+ storeId + "に設定されました");
     }
 
@@ -339,9 +347,9 @@ public class DataToUI : MonoBehaviour
         calorie = int.Parse(calorieInputField.text);
     }
 
-    public void SetMoney(Text text)
+    public void SetMoney()
     {
-        money = int.Parse(text.text);
+        money = int.Parse(moneyInputText.text);
         Debug.Log("金額が" + money + "に設定されました");
     }
 
