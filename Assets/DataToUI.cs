@@ -61,6 +61,12 @@ public class DataToUI : MonoBehaviour
     [SerializeField]
     PanelManager NotEatPanel;
 
+    [Header("履歴関連")]
+    [SerializeField]
+    VerticalLayoutGroup historyBox;
+    List<FoodItem> foodItemList = new List<FoodItem>();
+    private int historyCount = 0;
+
     //データベース
     private int storeId = 0;//お店番号(DropDownから取得される)
     private int calorie = 1000;
@@ -216,6 +222,17 @@ public class DataToUI : MonoBehaviour
                 //Contentに突っ込む
                 instance.transform.parent = gachaResultBox.transform;
                 instance.transform.localScale = new Vector3(1, 1, 1);
+
+                //ヒストリーを作成する
+                if (foodItemList.Count > 50) {
+                    Destroy(foodItemList[0]);
+                    foodItemList.RemoveAt(0);
+                }
+                var history = Instantiate(instance);
+                foodItemList.Add(history);
+                history.transform.parent = historyBox.transform;
+                history.transform.localScale = new Vector3(1, 1, 1);
+
                 //金額の更新
                 sum += price;
                 sumCal += Database.Instance.GetCalorie(foodID);
@@ -264,6 +281,7 @@ public class DataToUI : MonoBehaviour
             //金額の更新
         }
     }
+
 
     private void DestroyChild(Transform parentTransform) {
         foreach (Transform childTransform in parentTransform)
