@@ -36,7 +36,7 @@ public class FoodItem : MonoBehaviour
         //テキストを流し込む
         foodNameText.text = df.Get("MenuName", 0);
         foodPriceText.text = df.Get("Price", 0) + "円";
-        foodCalText.text = df.Get("Calorie", 0) + "Cal";
+        foodCalText.text = df.Get("Calorie", 0) + "kCal";
 
         //ナンバーを更新
         //店番号n-1の最後のidを取得する
@@ -75,7 +75,7 @@ public class FoodItem : MonoBehaviour
             {
                 foodNameText.text = "???";
                 foodPriceText.text = "???円";
-                foodCalText.text = "???Cal";
+                foodCalText.text = "???kCal";
                 foodImage.sprite = null;
                 newText.text = "";
             }
