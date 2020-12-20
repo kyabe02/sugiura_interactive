@@ -47,7 +47,8 @@ public static class Utility
 
         //データ読み込み
         StreamReader streamReader;
-        string path = Application.dataPath + "/Resources/" + name + ".json";
+        string path = UnityEngine.Application.persistentDataPath + "/" + name + ".json";
+        //string path = Application.dataPath + "/Resources/" + name + ".json";
         streamReader = new StreamReader(path);
         string inputString = streamReader.ReadToEnd();
         streamReader.Close();
@@ -80,7 +81,8 @@ public static class Utility
     }
 
     public static bool ExistJson(string name) {
-        string path = Application.dataPath + "/Resources/" + name + ".json";
+        string path = UnityEngine.Application.persistentDataPath + "/" + name + ".json";
+        //string path = Application.dataPath + "/Resources/" + name + ".json";
         if (System.IO.File.Exists(path)) {
             return true;
         }
@@ -300,7 +302,8 @@ public class DataFrame
     }
 
     public void SaveJson(string name) {
-        string path = Application.dataPath + "/Resources/" + name + ".json";
+        string path = UnityEngine.Application.persistentDataPath + "/" + name + ".json";
+        //string path = Application.dataPath + "/Resources/" + name + ".json";
         SaveJsonWithPath(path);
         
     }
