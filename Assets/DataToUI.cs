@@ -245,7 +245,7 @@ public class DataToUI : MonoBehaviour
 
         SumPriceText.text = sum.ToString() + "円";
         SumCalText.text = sumCal.ToString() + "kcal";
-        SumSaltText.text = "塩分" + sumSalt.ToString() + "g";
+        SumSaltText.text = sumSalt.ToString("N1") + "g";
 
     }
 
