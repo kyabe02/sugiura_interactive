@@ -9,6 +9,7 @@ public class ShareTweet : MonoBehaviour
 {
     public void Share()
     {
+        print("ツイッター連携を呼び出し！");
         StartCoroutine(ShareScreenShot());
     }
 

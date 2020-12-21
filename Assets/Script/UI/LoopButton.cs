@@ -12,6 +12,9 @@ public class LoopButton : MonoBehaviour
     [SerializeField]
     List<string> LoopList;
 
+    [SerializeField]
+    int buttonType = 0;
+
 
     int index = 0;
     Text text;
@@ -26,6 +29,15 @@ public class LoopButton : MonoBehaviour
     {
         index = (index + 1) % LoopList.Count;
         text.text = LoopList[index];
+        //内部データも更新
+        if (buttonType == 0)
+        {
+            Database.Instance.storeId = index;
+        }
+        else if (buttonType == 1) {
+            Database.Instance.money = int.Parse(LoopList[index]);
+        }
+        
     }
 
     public string Value
