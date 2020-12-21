@@ -283,7 +283,7 @@ public class DataToUI : MonoBehaviour
         currentDisplayType = 1;
 
         
-        for (int i = 0; i < foodIdHistory.Count; i++)
+        for (int i = foodIdHistory.Count - 1; i >= 0; i--)
         {
             //フードプレハブを生成
             FoodItem instance = Instantiate(foodItem);

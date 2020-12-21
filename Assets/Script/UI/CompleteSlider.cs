@@ -33,6 +33,9 @@ public class CompleteSlider : MonoBehaviour
         maxCount = Database.Instance.df.Where("RestaurantID", restaurantID).LineSize();
         getCount = Database.Instance.df.Where("RestaurantID", restaurantID).Where("Flag", 1).LineSize();
         eatCount = Database.Instance.df.Where("RestaurantID", restaurantID).Where("Flag", 2).LineSize();
+
+        getCount += eatCount;
+
         getSlider.maxValue = maxCount;
         eatSlider.maxValue = maxCount;
         UpdateSlider();
