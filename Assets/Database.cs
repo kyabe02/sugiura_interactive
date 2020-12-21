@@ -8,6 +8,11 @@ public class Database : SingletonMonoBehaviour<Database>
     //データフレーム形式
     public DataFrame df;
 
+    //その他のデータ
+    public int storeId = 0;//お店番号(DropDownから取得される)
+    public int calorie = 1000;
+    public int money = 1000;
+
     private void Start()
     {
         if (Utility.ExistJson("セーブデータ"))
@@ -85,6 +90,22 @@ public class Database : SingletonMonoBehaviour<Database>
     public int GetEatenCount(int restaurantID, int eatFlag) {
         //特定のレストランだけを抽出する
         return df.Where("RestaurantID", restaurantID).Where("Flag", eatFlag).LineSize();
+    }
+
+    public string GetShopName()
+    {
+        if (storeId == 0) {
+            return "デニーズ";
+        }
+        if (storeId == 1)
+        {
+            return "松屋";
+        }
+        if (storeId == 2)
+        {
+            return "マクドナルド";
+        }
+        return "お店が不明です";
     }
 }
 

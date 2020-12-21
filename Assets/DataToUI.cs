@@ -64,13 +64,11 @@ public class DataToUI : MonoBehaviour
     [Header("履歴関連")]
     [SerializeField]
     VerticalLayoutGroup historyBox;
-    List<FoodItem> foodItemList = new List<FoodItem>();
+    List<int> foodIdHistory = new List<int>();
     private int historyCount = 0;
 
     //データベース
-    private int storeId = 0;//お店番号(DropDownから取得される)
-    private int calorie = 1000;
-    private int money = 1000;
+    
 
     //内部用変数
     PanelManager next;              //次に遷移する用のパネル
@@ -200,13 +198,13 @@ public class DataToUI : MonoBehaviour
         int retryCounter = 0;
         while (true) {
             //フードIDをランダムで取得
-            int foodID = Database.Instance.RandomMenu(storeId);
+            int foodID = Database.Instance.RandomMenu(Database.Instance.storeId);
             
             //金額をメモ
             int price = Database.Instance.GetPrice(foodID);
 
             //金額によってリトライするか設定
-            if (price + sum > money)
+            if (price + sum > Database.Instance.money)
             {
                 retryCounter += 1;
             }
@@ -224,14 +222,10 @@ public class DataToUI : MonoBehaviour
                 instance.transform.localScale = new Vector3(1, 1, 1);
 
                 //ヒストリーを作成する
-                if (foodItemList.Count > 50) {
-                    Destroy(foodItemList[0]);
-                    foodItemList.RemoveAt(0);
+                if (foodIdHistory.Count > 30) {
+                    foodIdHistory.RemoveAt(0);
                 }
-                var history = Instantiate(instance);
-                foodItemList.Add(history);
-                history.transform.parent = historyBox.transform;
-                history.transform.localScale = new Vector3(1, 1, 1);
+                foodIdHistory.Add(foodID);
 
                 //金額の更新
                 sum += price;
@@ -279,6 +273,29 @@ public class DataToUI : MonoBehaviour
             instance.transform.parent = liblaryBox.transform;
             instance.transform.localScale = new Vector3(1, 1, 1);
             //金額の更新
+        }
+    }
+
+    public void SetHistory()
+    {
+        //図鑑を空にする
+        DestroyChild(historyBox.transform);
+        currentDisplayType = 1;
+
+        
+        for (int i = 0; i < foodIdHistory.Count; i++)
+        {
+            //フードプレハブを生成
+            FoodItem instance = Instantiate(foodItem);
+            instance.gameObject.SetActive(true);
+            //プレハブにフードIDを流し込み
+            instance.SetFoodID(foodIdHistory[i]);
+            instance.itemType = 0;
+            //プレハブの表示準備OKにする
+            instance.Display();
+            //Contentに突っ込む
+            instance.transform.parent = historyBox.transform;
+            instance.transform.localScale = new Vector3(1, 1, 1);
         }
     }
 
@@ -345,11 +362,19 @@ public class DataToUI : MonoBehaviour
             var act = child.gameObject.GetComponent<FoodItem>();
             act.Display();
         }
+        //ライブラリ
         foreach (FoodItem child in liblaryBox.transform.GetComponentsInChildren<FoodItem>())
         {
             var act = child.gameObject.GetComponent<FoodItem>();
             act.Display();
         }
+        //履歴
+        foreach (FoodItem child in historyBox.transform.GetComponentsInChildren<FoodItem>())
+        {
+            var act = child.gameObject.GetComponent<FoodItem>();
+            act.Display();
+        }
+
     }
 
     //================================
@@ -357,18 +382,18 @@ public class DataToUI : MonoBehaviour
     //================================
     public void SetStoreID() {
         Debug.Log("お店の名前は" + storeText.text);
-        storeId = (int)Enum.Parse(typeof(Store), storeText.text);
-        Debug.Log("idが"+ storeId + "に設定されました");
+        Database.Instance.storeId = (int)Enum.Parse(typeof(Store), storeText.text);
+        Debug.Log("idが"+ Database.Instance.storeId + "に設定されました");
     }
 
     public void SetCalorie() {
-        calorie = int.Parse(calorieInputField.text);
+        Database.Instance.calorie = int.Parse(calorieInputField.text);
     }
 
     public void SetMoney()
     {
-        money = int.Parse(moneyInputText.text);
-        Debug.Log("金額が" + money + "に設定されました");
+        Database.Instance.money = int.Parse(moneyInputText.text);
+        Debug.Log("金額が" + Database.Instance.money + "に設定されました");
     }
 
     public void Save() {
