@@ -2713,7 +2713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efb538f7e4224467787f18c42c98e289, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultIndex: 1
+  defaultIndex: 0
   LoopList:
   - "\u30C7\u30CB\u30FC\u30BA"
   - "\u677E\u5C4B"
