@@ -185,12 +185,12 @@ namespace UniBlock
             //出力
             var y = A * t + B;
             //出力する色
-            this.image.color = new Color(0, 0, 0, y);
+            this.image.color = new Color(0.5f, 0.5f, 0.5f, y);
         }
 
         public sealed override void TimerEnd()
         {
-            this.image.color = new Color(0, 0, 0, 1);
+            this.image.color = new Color(0.5f, 0.5f, 0.5f, 1);
         }
     }
 
@@ -226,12 +226,12 @@ namespace UniBlock
             //出力
             var y = A * t + B;
             //出力する色
-            this.image.color = new Color(0, 0, 0, y);
+            this.image.color = new Color(0.5f, 0.5f, 0.5f, y);
         }
 
         public sealed override void TimerEnd()
         {
-            this.image.color = new Color(0, 0, 0, 0);
+            this.image.color = new Color(0.5f, 0.5f, 0.5f, 0);
 
             //操作を有効にする
             image.raycastTarget = false;
