@@ -196,6 +196,9 @@ public class DataToUI : MonoBehaviour
         int sumCal = 0;
         float sumSalt = 0;
         int retryCounter = 0;
+
+        List<string> menusName = new List<string>();
+
         while (true) {
             //フードIDをランダムで取得
             int foodID = Database.Instance.RandomMenu(Database.Instance.storeId);
@@ -235,6 +238,10 @@ public class DataToUI : MonoBehaviour
                 if (Database.Instance.GetFlag(foodID)==0) {
                     Database.Instance.SetWatched(foodID);
                 }
+
+                //フード名を追加
+                menusName.Add(Database.Instance.GetName(foodID));
+                
             }
 
             //10回試してもダメなら終了
@@ -246,6 +253,12 @@ public class DataToUI : MonoBehaviour
         SumPriceText.text = sum.ToString() + "円";
         SumCalText.text = sumCal.ToString() + "kcal";
         SumSaltText.text = sumSalt.ToString("N1") + "g";
+
+        //データベースを更新する
+        Database.Instance.currentMenus = menusName;
+        Database.Instance.drawMoney = sum;
+        Database.Instance.currentKcal = sumCal;
+
 
     }
 

@@ -8,10 +8,16 @@ public class Database : SingletonMonoBehaviour<Database>
     //データフレーム形式
     public DataFrame df;
 
-    //その他のデータ
-    public int storeId = 0;//お店番号(DropDownから取得される)
+    //その他のデータ(設定のデータ)
+    public int storeId = 0;
     public int calorie = 1000;
     public int money = 1000;
+
+    //直近で引いたデータ
+    public int drawMoney = 0;
+    public List<string> currentMenus = new List<string>();
+    public int currentKcal = 0;
+
 
     private void Start()
     {
