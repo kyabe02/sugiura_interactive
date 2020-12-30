@@ -42,7 +42,7 @@ public static class Utility
         return df;
     }
 
-    //Resourcesフォルダ内にあるJsonファイルを読み込み、Fataframe型に変換する
+    //セーブフォルダ内にあるJsonファイルを読み込み、Fataframe型に変換する
     public static DataFrame ReadJson(string name) {
 
         //データ読み込み
@@ -303,7 +303,6 @@ public class DataFrame
 
     public void SaveJson(string name) {
         string path = UnityEngine.Application.persistentDataPath + "/" + name + ".json";
-        //string path = Application.dataPath + "/Resources/" + name + ".json";
         SaveJsonWithPath(path);
         
     }
